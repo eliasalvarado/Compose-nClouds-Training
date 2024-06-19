@@ -1,0 +1,28 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: cases123
+      MYSQL_DATABASE: case_studies
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  webapp:
+    build: ./webapp
+    container_name: webapp_container
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    environment:
+      FLASK_ENV: development
+      DATABASE_HOST: db
+      DATABASE_USER: root
+      DATABASE_PASSWORD: cases123
+      DATABASE_DB: case_studies
+
+volumes:
+  db_data:
